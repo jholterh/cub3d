@@ -14,7 +14,14 @@ LIBFT_DIR = libft
 LIBS = -L$(LIBFT_DIR) -lft
 
 # Source files
-SRC = src/parsing/file_format.c src/parsing/utils.c src/cub3d.c src/parsing/0_start.c
+SRC = src/parsing/1_file_format.c src/parsing/utils.c src/cub3d.c src/parsing/0_start.c \
+	src/parsing/extract_utils.c \
+    src/parsing/texture_parsing.c \
+    src/parsing/grid_utils.c \
+    src/parsing/color_utils.c \
+    src/parsing/map_building.c \
+    src/parsing/flood_fill_utils.c \
+    src/parsing/validation_utils.c \
 
 # Object files (replace src/ with obj/)
 OBJ = $(SRC:src/%.c=obj/%.o)

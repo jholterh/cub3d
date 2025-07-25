@@ -12,14 +12,57 @@
 
 #include "cub3d.h"
 
-int     check_file_format(char *file)
+static int safe_file(const int fd, char ***data)
+{
+    int     i;
+    int     j;
+    char    *line;
+    char    **tmp;
+
+    i = 0;
+    *data = malloc(50 * sizeof(char *));
+    if (!*data)
+        return (print_error("Malloc failed", 1));
+    while (1)
+    {
+        line = ft_get_next_line(fd);
+        if (line == NULL)
+            break;
+
+        (*data)[i] = line;
+        j = -1;
+        while ((*data)[i][++j] != '\0')
+        {
+            if ((*data)[i][j] == '\n')
+                (*data)[i][j] = '\0';
+        }
+        i++;
+
+        if (i % 50 == 0)
+        {
+            tmp = (char **)ft_realloc2((void **)*data, i, i + 50);
+            if (!tmp)
+            {
+                print_error("Realloc failed", 1);
+                while (--i >= 0)
+                    free((*data)[i]);
+                free(*data);
+                return (1);
+            }
+            *data = tmp;
+        }
+    }
+    (*data)[i] = NULL;
+    return (0);
+}
+
+
+int check_file_format(char *file, char ***data)
 {
     int     str_len;
     int     fd;
     int     i;
-    char    *line;
-    char    **data;
-    
+
     if (!file)
         return (print_error("File is NULL", 1));
     str_len = ft_strlen(file);
@@ -28,20 +71,14 @@ int     check_file_format(char *file)
     fd = open(file, O_RDONLY);
     if (fd == -1)
         return (print_error("File could not be opened", 1));
-    data = malloc(sizeof(char *));
-    if (!data)
-        return (print_error("Malloc failed", 1));
-    i = 1;
-    while (1)
+    if (safe_file(fd, data))
+        return (close(fd), 1);
+    close(fd);
+    if (!(*data)[0] || !(*data)[0][0])
     {
-        line = ft_get_next_line(fd);
-        data[i - 1] = line;
-        i++;
-        if (!line)
-            break ;
-        data = ft_realloc2(data, i, i - 1);
-        if (!data)
-            return (print_error("Malloc failed", 1));
+        ft_strfree(*data);
+        return (print_error("File is empty", 1));
     }
+    // print_lines(data);
     return (0);
 }

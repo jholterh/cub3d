@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdio.h>
+# include <math.h>
 # include "libft.h"
 
 // Define color constants
@@ -26,7 +27,7 @@
 
 typedef struct s_init_data
 {
-    char    **textures_paths;
+    char    *textures_paths[4];
     int     sky_color;
     int     ground_color;
     int     player_pos_x;
@@ -37,6 +38,16 @@ typedef struct s_init_data
     int     **grid;
 }   t_init_data;
 
+typedef struct s_parsing_help
+{
+    char    **data;
+    char    *ground_color_str;
+    int     ground_color[3];
+    char    *sky_color_str;
+    int     sky_color[3];
+    char    **grid;
+}   t_parsing_help;
+
 //PARSING
 // utils
 int     print_error(const char *error_msg, const int return_code);
@@ -45,6 +56,32 @@ int     print_error(const char *error_msg, const int return_code);
 int     parsing(int argc, char **argv);
 
 // file format
-int     check_file_format(char *file);
+int     check_file_format(char *file, char ***data);
+
+
+// Extraction and utility
+int	check_line_invalid(char *line);
+char    *extract_data(char *str, char *type);
+int	check_for_type(char *str, char *type);
+
+
+// Grid and map building
+int	handle_map_line(t_init_data *init_data, t_parsing_help *parsing_help, char *line);
+int **allocate_int_grid(int height, int width);
+int	create_map(char **char_grid, int **int_grid, t_init_data *init_data);
+
+// Flood fill (map closure)
+int	prepare_flood_fill(int **grid, int height, int width);
+
+// textures
+int	get_textures(t_init_data *init_data, t_parsing_help *parsing_help);
+
+// Color utilities
+void put_colors_in_int(int *seperate_colors, int *colors);
+int  extract_colors(char *color_str, int *color);
+
+// Validation and parsing
+int validate_textures_parse(t_init_data *init_data, t_parsing_help *parsing_help);
+
 
 #endif
