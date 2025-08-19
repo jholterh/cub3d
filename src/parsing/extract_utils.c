@@ -5,28 +5,38 @@
 // or NULL if the line is invalid or the type does not match.
 static char *extract_and_validate(char *str, int type_len)
 {
-    int i;
-    int end_of_str;
+    int i = 0;
+    int start, end;
 
     str += type_len;
     while (*str && *str == ' ')
         str++;
-    i = 0;
-    while (str[i] && str[i] != ' ')
-        i++;
-    end_of_str = i;
-    while (str[i])
+
+    start = 0;
+    while (str[start] && str[start] != ' ')
+        start++;
+
+    end = start;
+
+    // Check for invalid chars after the valid part
+    while (str[end])
     {
-        if (str[i] != ' ')
+        if (str[end] != ' ')
         {
-            printf("invalid char: '%c' in line: %s\n", str[i], str);
+            printf("invalid char: '%c' in line: %s\n", str[end], str);
             return (NULL);
         }
-        i++;
+        end++;
     }
-    str[end_of_str] = '\0';
-    return (ft_strdup(str));
+
+    // Copy only the valid substring
+    char *result = malloc(start + 1);
+    if (!result)
+        return (NULL);
+    ft_strlcpy(result, str, start + 1);
+    return result;
 }
+
 
 char    *extract_data(char *str, char *type)
 {

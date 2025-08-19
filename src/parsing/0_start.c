@@ -6,7 +6,7 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 16:32:12 by jholterh          #+#    #+#             */
-/*   Updated: 2025/07/12 16:52:11 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/19 17:27:35 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,15 @@ int init_parsing_help(t_parsing_help *parsing_help)
         return (print_error("Malloc failed for data", 1));
 
     parsing_help->grid = malloc(50 * sizeof(char *));
-    if (!parsing_help->grid)
-    {
-        free(parsing_help->data);
+    if (!parsing_help->grid) {
+        free(parsing_help->data);             // FIX: free data if grid fails
+        parsing_help->data = NULL;            // Good practice
         return (print_error("Malloc failed for grid", 1));
     }
 
-    return (0);
+    return 0;
 }
+
 
 // Initialize main structure
 void init_struct(t_init_data *init_data)
@@ -62,65 +63,98 @@ void init_struct(t_init_data *init_data)
     init_data->grid = NULL;
 }
 
-// Parsing function
+void free_textures_and_colors(t_init_data *init_data, t_parsing_help *parsing_help)
+{
+    int i;
+    for (i = 0; i < 4; i++)
+        if (init_data->textures_paths[i])
+            free(init_data->textures_paths[i]);
+    if (parsing_help->ground_color_str)
+        free(parsing_help->ground_color_str);
+    if (parsing_help->sky_color_str)
+        free(parsing_help->sky_color_str);
+}
+
+void free_map_grid(char **grid, int map_height)
+{
+    int i;
+    if (!grid)
+        return;
+    for (i = 0; i < map_height; i++)
+        free(grid[i]);
+    free(grid);
+}
+
+void free_int_grid(int **grid, int height)
+{
+    int i;
+    if (!grid)
+        return;
+    for (i = 0; i < height; i++)
+        free(grid[i]);
+    free(grid);
+}
+
+
 int parsing(int argc, char **argv)
 {
-    t_init_data     *init_data = NULL;
-    t_parsing_help  *parsing_help = NULL;
+    t_init_data *init_data = NULL;
+    t_parsing_help *parsing_help = NULL;
 
-    // Check argument count
     if (argc != 2)
         return (print_error("Usage: ./cub3d <file.cub>", 1));
 
-    // Allocate and initialize parsing_help
     parsing_help = malloc(sizeof(t_parsing_help));
     if (!parsing_help)
         return (print_error("Malloc failed for parsing_help", 1));
 
-    if (init_parsing_help(parsing_help))
-    {
+    if (init_parsing_help(parsing_help)) {
         free(parsing_help);
         return (1);
     }
-
-    // Check file format
-    if (check_file_format(argv[1], &parsing_help->data))
-    {
+    if (parsing_help->data)
+        free(parsing_help->data);
+    if (check_file_format(argv[1], &parsing_help->data)) {
         ft_strfree(parsing_help->data);
-        free(parsing_help->grid);
+        if (parsing_help->grid)
+            free_map_grid(parsing_help->grid, init_data->map_height);
         free(parsing_help);
         return (1);
     }
 
-    // Allocate and initialize init_data
     init_data = malloc(sizeof(t_init_data));
-    if (!init_data)
-    {
+    if (!init_data) {
         ft_strfree(parsing_help->data);
-        free(parsing_help->grid);
+        if (parsing_help->grid)
+            free_map_grid(parsing_help->grid, init_data->map_height);
         free(parsing_help);
         return (print_error("Malloc failed for init_data", 1));
     }
-
     init_struct(init_data);
 
-    // Validate textures and parse data
-    if (validate_textures_parse(init_data, parsing_help))
-    {
+    if (validate_textures_parse(init_data, parsing_help)) {
+        free_textures_and_colors(init_data, parsing_help);
         ft_strfree(parsing_help->data);
-        free(parsing_help->grid);
+        if (parsing_help->grid)
+            free_map_grid(parsing_help->grid, init_data->map_height);
+        free_int_grid(init_data->grid, init_data->map_height); // <--- ADDED
         free(parsing_help);
         free(init_data);
+        printf(COLOR_RED "This is where it exits.\n" COLOR_RESET);
         return (1);
     }
 
-    // Free parsing_help after validation
+    if (parsing_help->grid)
+        free_map_grid(parsing_help->grid, init_data->map_height);
+    free_textures_and_colors(init_data, parsing_help);
     ft_strfree(parsing_help->data);
-    free(parsing_help->grid);
+    free_int_grid(init_data->grid, init_data->map_height); // <--- ADDED
     free(parsing_help);
-
-    // Free init_data if no longer needed
     free(init_data);
 
     return (0);
 }
+
+
+
+
