@@ -92,11 +92,51 @@ int get_textures(t_init_data *init_data, t_parsing_help *parsing_help)
 {
     int i;
     int map_found;
+    int map_over; // NEW: tracks if map has ended
 
     i = 0;
     map_found = 0;
+    map_over = 0;
     while (parsing_help->data[i])
     {
+        // If map is found and map is not yet over
+        if (map_found && !map_over)
+        {
+            // Check for empty line (only spaces or '\n')
+            int j = 0;
+            int only_spaces = 1;
+            while (parsing_help->data[i][j])
+            {
+                if (parsing_help->data[i][j] != ' ' && parsing_help->data[i][j] != '\n')
+                {
+                    only_spaces = 0;
+                    break;
+                }
+                j++;
+            }
+            if (only_spaces)
+            {
+                // Map is over after the first empty line after map started
+                map_over = 1;
+                i++;
+                continue;
+            }
+        }
+        // If map is over, any non-empty, non-space, non-'\n' character is an error
+        if (map_over)
+        {
+            int j = 0;
+            while (parsing_help->data[i][j])
+            {
+                if (parsing_help->data[i][j] != ' ' && parsing_help->data[i][j] != '\n')
+                {
+                    return (print_error("Invalid data after map section", 1));
+                }
+                j++;
+            }
+            i++;
+            continue;
+        }
         if (check_and_parse_line(init_data, parsing_help, parsing_help->data[i], &map_found))
             return (1);
         i++;
@@ -107,3 +147,4 @@ int get_textures(t_init_data *init_data, t_parsing_help *parsing_help)
         return (print_error("Invalid texture identifiers", 1));
     return (0);
 }
+

@@ -101,6 +101,21 @@ static void	free_help_map(int **help_map, int height)
 	free(help_map);
 }
 
+int is_flying_wall(int **map, int x, int y, int height, int width) {
+    // Only call this for map[y][x] == 1
+    int connected = 0;
+    // Check up
+    if (y > 0 && (map[y-1][x] == 1 || map[y-1][x] == 2)) connected = 1;
+    // Check down
+    if (y < height-1 && (map[y+1][x] == 1 || map[y+1][x] == 2)) connected = 1;
+    // Check left
+    if (x > 0 && (map[y][x-1] == 1 || map[y][x-1] == 2)) connected = 1;
+    // Check right
+    if (x < width-1 && (map[y][x+1] == 1 || map[y][x+1] == 2)) connected = 1;
+    return !connected;
+}
+
+
 // Prepares a helper map and runs flood fill to verify the map is closed (no leaks).
 // Returns 0 if map is closed, or prints an error and returns 1 if not.
 int	prepare_flood_fill(int **grid, int height, int width)
@@ -121,6 +136,16 @@ int	prepare_flood_fill(int **grid, int height, int width)
 	result = 0;
 	if (flood_fill(help_map, height, width, start_x, start_y))
 		result = print_error("Flood fill failed: map is not closed", 1);
+	// Scan the whole help_map for flying walls
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			if (help_map[y][x] == 1 && is_flying_wall(help_map, x, y, height, width)) {
+				result = print_error("Flying wall detected", 1);
+				break;
+			}
+		}
+	}
+
 	free_help_map(help_map, height);
 	return (result);
 }

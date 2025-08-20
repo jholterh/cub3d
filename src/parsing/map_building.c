@@ -26,8 +26,10 @@ static int	process_char(char **char_grid, int **int_grid, t_init_data *init_data
 {
 	if (char_grid[i][j] == '1')
 		int_grid[i][j] = 1; // Wall
-	else if (char_grid[i][j] == '0' || char_grid[i][j] == ' ')
+	else if (char_grid[i][j] == '0')
 		int_grid[i][j] = 0; // Empty space
+    else if (char_grid[i][j] == ' ')
+        int_grid[i][j] = -1;
 	else if (char_grid[i][j] == 'N' || char_grid[i][j] == 'S' ||
 			 char_grid[i][j] == 'E' || char_grid[i][j] == 'W')
 	{

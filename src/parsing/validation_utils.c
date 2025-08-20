@@ -42,6 +42,53 @@ void pad_map_rows(char **char_grid, int map_height, int map_width)
     }
 }
 
+    int flood_fill(int **grid, int x, int y, int height, int width)
+    {
+        if (x < 0 || x >= height || y < 0 || y >= width)
+            return 0;
+        if (grid[x][y] == 1) // Wall
+            return 0;
+        if (grid[x][y] == 0) // Open space reachable from outside: INVALID!
+            return 1;
+        if (grid[x][y] == 5) // Already visited
+            return 0;
+
+        grid[x][y] = 5; // Mark as visited
+
+        // Recursively fill adjacent cells; if any return 1, propagate error
+        if (flood_fill(grid, x - 1, y, height, width)) return 1;
+        if (flood_fill(grid, x + 1, y, height, width)) return 1;
+        if (flood_fill(grid, x, y - 1, height, width)) return 1;
+        if (flood_fill(grid, x, y + 1, height, width)) return 1;
+
+        return 0;
+    }
+
+
+    int flood_fill_outside(int **grid, int height, int width)
+    {
+        int i, j;
+
+        // Start from left and right edges
+        for (i = 0; i < height; i++) {
+            if (grid[i][0] != 1 && flood_fill(grid, i, 0, height, width))
+                return print_error("Invalid map: 0 is reachable from outside", 1);
+            if (grid[i][width - 1] != 1 && flood_fill(grid, i, width - 1, height, width))
+                return print_error("Invalid map: 0 is reachable from outside", 1);
+        }
+
+        // Start from top and bottom edges
+        for (j = 0; j < width; j++) {
+            if (grid[0][j] != 1 && flood_fill(grid, 0, j, height, width))
+                return print_error("Invalid map: 0 is reachable from outside", 1);
+            if (grid[height - 1][j] != 1 && flood_fill(grid, height - 1, j, height, width))
+                return print_error("Invalid map: 0 is reachable from outside", 1);
+        }
+
+        return 0; // Valid map
+    }
+
+
 
 
 
@@ -84,7 +131,8 @@ int validate_textures_parse(t_init_data *init_data, t_parsing_help *parsing_help
 
     if (prepare_flood_fill(init_data->grid, init_data->map_height, init_data->map_width))
         return (1);
-
+    if (flood_fill_outside(init_data->grid, init_data->map_height, init_data->map_width))
+        return (print_error("Invalid map: 0 is reachable from outside", 1));
     printf("Textures:\n");
     printf("NO: %s\n", init_data->textures_paths[0]);
     printf("SO: %s\n", init_data->textures_paths[1]);
