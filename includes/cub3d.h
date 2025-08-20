@@ -6,7 +6,7 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:16:26 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/19 16:04:46 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/20 16:58:13 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int **allocate_int_grid(int height, int width);
 int	create_map(char **char_grid, int **int_grid, t_init_data *init_data);
 
 // Flood fill (map closure)
-int	prepare_flood_fill(int **grid, int height, int width);
+int flood_it_all(int **grid, int height, int width);
 
 // textures
 int	get_textures(t_init_data *init_data, t_parsing_help *parsing_help);
