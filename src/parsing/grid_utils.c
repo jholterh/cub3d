@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   grid_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/21 09:04:56 by jholterh          #+#    #+#             */
+/*   Updated: 2025/08/21 09:05:35 by jholterh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 // Frees the grid memory in case of an error during reallocation.
@@ -34,7 +46,8 @@ static int	realloc_grid(t_init_data *init_data, t_parsing_help *parsing_help)
 
 // Adds a line to the grid and updates map dimensions.
 // Returns 0 on success, or 1 on failure.
-static int	add_line_to_grid(t_init_data *init_data, t_parsing_help *parsing_help, char *line)
+static int	add_line_to_grid(t_init_data *init_data,
+	t_parsing_help *parsing_help, char *line)
 {
 	int	line_width;
 
@@ -53,7 +66,8 @@ static int	add_line_to_grid(t_init_data *init_data, t_parsing_help *parsing_help
 
 // Handles a map line by reallocating the grid if needed,
 // adding the line to the grid, and updating map dimensions.
-int	handle_map_line(t_init_data *init_data, t_parsing_help *parsing_help, char *line)
+int	handle_map_line(t_init_data *init_data,
+	t_parsing_help *parsing_help, char *line)
 {
 	if (init_data->map_height % 50 == 0)
 	{
