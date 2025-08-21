@@ -6,7 +6,7 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:16:26 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/20 16:58:13 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/21 08:58:59 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,14 @@ typedef struct s_parsing_help
     int     sky_color[3];
     char    **grid;
 }   t_parsing_help;
+
+typedef struct s_mapinfo
+{
+	int	**grid;
+	int	height;
+	int	width;
+}	t_mapinfo;
+
 
 //PARSING
 // utils
