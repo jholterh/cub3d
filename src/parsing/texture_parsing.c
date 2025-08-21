@@ -6,12 +6,13 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 10:41:43 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/21 10:41:44 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/21 15:00:03 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+// Helper struct to pass parsing context and data between functions
 typedef struct s_parse_helper
 {
 	char			*type;
@@ -23,6 +24,7 @@ typedef struct s_parse_helper
 	char			*line;
 }	t_parse_helper;
 
+// Parses a texture line, checks for duplicates, extracts and stores the texture path
 static int	parse_texture_line(t_parse_helper *helper)
 {
 	char	*tmp;
@@ -40,6 +42,7 @@ static int	parse_texture_line(t_parse_helper *helper)
 	return (0);
 }
 
+// Parses a color line, checks for duplicates, extracts and stores the color string
 static int	parse_color_line(t_parse_helper *helper)
 {
 	char	*tmp;
@@ -57,6 +60,7 @@ static int	parse_color_line(t_parse_helper *helper)
 	return (0);
 }
 
+// Initializes the helper struct for texture parsing
 static void	setup_texture_helper(t_parse_helper *helper, char *type,
 		int *count, int index)
 {
@@ -66,6 +70,7 @@ static void	setup_texture_helper(t_parse_helper *helper, char *type,
 	helper->color_str = NULL;
 }
 
+// Initializes the helper struct for color parsing
 static void	setup_color_helper(t_parse_helper *helper, char *type,
 		int *count, char **color_str)
 {
@@ -75,6 +80,7 @@ static void	setup_color_helper(t_parse_helper *helper, char *type,
 	helper->index = 0;
 }
 
+// Checks if the line contains a texture identifier and parses it if found
 static int	parse_texture_types(t_parse_helper *helper, char *line,
 		int *map_found, int *counts)
 {
@@ -101,6 +107,7 @@ static int	parse_texture_types(t_parse_helper *helper, char *line,
 	return (-1);
 }
 
+// Checks if the line contains a color identifier and parses it if found
 static int	parse_color_types(t_parse_helper *helper, char *line,
 		int *map_found, int *counts)
 {
@@ -119,6 +126,7 @@ static int	parse_color_types(t_parse_helper *helper, char *line,
 	return (-1);
 }
 
+// Checks and parses a line for texture, color, or map data
 static int	check_and_parse_line(t_init_data *init_data,
 		t_parsing_help *parsing_help, char *line, int *map_found)
 {
@@ -142,6 +150,7 @@ static int	check_and_parse_line(t_init_data *init_data,
 	return (0);
 }
 
+// Checks if a line is empty or contains only whitespace
 static int	check_empty_line(char *line)
 {
 	int	j;
@@ -156,6 +165,7 @@ static int	check_empty_line(char *line)
 	return (1);
 }
 
+// Checks if there is any invalid data after the map section
 static int	check_map_over_line(char *line)
 {
 	int	j;
@@ -170,6 +180,7 @@ static int	check_map_over_line(char *line)
 	return (0);
 }
 
+// Handles logic for processing map lines and detecting section transitions
 static int	process_map_logic(t_parsing_help *parsing_help, int *i,
 		int *map_found, int *map_over)
 {
@@ -192,6 +203,7 @@ static int	process_map_logic(t_parsing_help *parsing_help, int *i,
 	return (0);
 }
 
+// Validates that all required textures and colors have been parsed
 static int	validate_textures(t_init_data *init_data,
 		t_parsing_help *parsing_help)
 {
@@ -205,6 +217,7 @@ static int	validate_textures(t_init_data *init_data,
 	return (0);
 }
 
+// Main function to process all lines for textures, colors, and map data
 int	get_textures(t_init_data *init_data, t_parsing_help *parsing_help)
 {
 	int	i;

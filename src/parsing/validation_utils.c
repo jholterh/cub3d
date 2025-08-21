@@ -6,7 +6,7 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 11:01:07 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/21 11:02:03 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/21 14:52:55 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,10 @@ static int	validate_and_init_grid(t_init_data *init_data,
 	return (0);
 }
 
+// This function validates the textures and colors
+// It checks if the textures exist and are readable,
+// extracts the colors from the parsing help structure,
+// and initializes the grid in the init_data structure
 int	validate_textures_parse(t_init_data *init_data,
 		t_parsing_help *parsing_help)
 {

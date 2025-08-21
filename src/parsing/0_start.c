@@ -6,12 +6,14 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 16:32:12 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/21 08:40:35 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/21 15:03:15 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+// Initializes the parsing_help structure and allocates memory for its arrays.
+// Returns 0 on success, or an error code if allocation fails.
 int	init_parsing_help(t_parsing_help *parsing_help)
 {
 	int	i;
@@ -39,6 +41,7 @@ int	init_parsing_help(t_parsing_help *parsing_help)
 	return (0);
 }
 
+// Initializes the init_data structure with default values.
 void	init_struct(t_init_data *init_data)
 {
 	init_data->textures_paths[0] = NULL;
@@ -55,73 +58,8 @@ void	init_struct(t_init_data *init_data)
 	init_data->grid = NULL;
 }
 
-void	free_textures_and_colors(t_init_data *init_data,
-	t_parsing_help *parsing_help)
-{
-	int	i;
-
-	i = 0;
-	while (i < 4)
-	{
-		if (init_data->textures_paths[i])
-			free(init_data->textures_paths[i]);
-		i++;
-	}
-	if (parsing_help->ground_color_str)
-		free(parsing_help->ground_color_str);
-	if (parsing_help->sky_color_str)
-		free(parsing_help->sky_color_str);
-}
-
-void	free_map_grid(char **grid, int map_height)
-{
-	int	i;
-
-	if (!grid)
-		return ;
-	i = 0;
-	while (i < map_height)
-	{
-		free(grid[i]);
-		i++;
-	}
-	free(grid);
-}
-
-void	free_int_grid(int **grid, int height)
-{
-	int	i;
-
-	if (!grid)
-		return ;
-	i = 0;
-	while (i < height)
-	{
-		free(grid[i]);
-		i++;
-	}
-	free(grid);
-}
-
-static int	parsing_cleanup(t_init_data *init_data,
-	t_parsing_help *parsing_help, int exit_code)
-{
-	int	map_height;
-
-	map_height = 0;
-	if (init_data)
-		map_height = init_data->map_height;
-	if (parsing_help->grid)
-		free_map_grid(parsing_help->grid, map_height);
-	free_textures_and_colors(init_data, parsing_help);
-	ft_strfree(parsing_help->data);
-	if (init_data)
-		free_int_grid(init_data->grid, map_height);
-	free(parsing_help);
-	free(init_data);
-	return (exit_code);
-}
-
+// Initializes parsing by checking arguments, allocating structures, and validating the file.
+// Returns 0 on success, or an error code if any step fails.
 static int	parsing_init(int argc, char **argv, t_init_data **init_data,
 	t_parsing_help **parsing_help)
 {
@@ -146,6 +84,8 @@ static int	parsing_init(int argc, char **argv, t_init_data **init_data,
 	return (0);
 }
 
+// Main entry point for parsing. Initializes structures, validates textures, and cleans up.
+// Returns 1 on error, or 0 on success.
 int	parsing(int argc, char **argv)
 {
 	t_init_data		*init_data;

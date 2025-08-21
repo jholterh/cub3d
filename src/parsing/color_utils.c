@@ -6,12 +6,19 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 08:49:41 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/21 08:49:42 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/21 15:04:17 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+/**
+ * Extracts RGB color values from a comma-separated string.
+ * 
+ * @param color_str The input string in the format "R,G,B".
+ * @param color An integer array of size 3 to store the extracted RGB values.
+ * @return 0 on success, 1 on error (invalid format or out-of-range values).
+ */
 int	extract_colors(char *color_str, int *color)
 {
 	char	**rgb_values;
@@ -38,6 +45,12 @@ int	extract_colors(char *color_str, int *color)
 	return (0);
 }
 
+/**
+ * Packs separate RGB color values into a single integer.
+ * 
+ * @param seperate_colors An integer array of size 3 containing R, G, B values.
+ * @param colors Pointer to an integer where the packed color will be stored.
+ */
 void	put_colors_in_int(int *seperate_colors, int *colors)
 {
 	*colors = ((seperate_colors[0] & 0xFF) << 16)

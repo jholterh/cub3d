@@ -6,7 +6,7 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:16:26 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/21 08:58:59 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/21 14:51:48 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,10 @@ int  extract_colors(char *color_str, int *color);
 // Validation and parsing
 int validate_textures_parse(t_init_data *init_data, t_parsing_help *parsing_help);
 
+// Free functions
+void free_textures_and_colors(t_init_data *init_data, t_parsing_help *parsing_help);
+void free_map_grid(char **grid, int map_height);
+void free_int_grid(int **grid, int height);
+int parsing_cleanup(t_init_data *init_data, t_parsing_help *parsing_help, int exit_code);
 
 #endif

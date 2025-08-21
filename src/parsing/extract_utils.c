@@ -6,12 +6,14 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 08:54:03 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/21 08:54:04 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/21 15:04:58 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+// Extracts and validates a substring from 'str' after skipping 'type_len' characters.
+// Ensures only spaces follow the extracted word, otherwise prints an error and returns NULL.
 static char	*extract_and_validate(char *str, int type_len)
 {
 	int		start;
@@ -41,6 +43,8 @@ static char	*extract_and_validate(char *str, int type_len)
 	return (result);
 }
 
+// Extracts data from 'str' if it starts with 'type', skipping leading spaces.
+// Returns the extracted and validated substring, or NULL if not matching.
 char	*extract_data(char *str, char *type)
 {
 	int	type_len;
@@ -53,6 +57,8 @@ char	*extract_data(char *str, char *type)
 	return (NULL);
 }
 
+// Checks if the line 'str' contains the specified 'type' at the start (ignoring leading spaces).
+// Returns 1 if found, 0 otherwise.
 int	check_for_type(char *str, char *type)
 {
 	int	type_len;
@@ -65,6 +71,8 @@ int	check_for_type(char *str, char *type)
 	return (0);
 }
 
+// Checks if the line 'line' contains any non-space character.
+// Prints a message and returns 1 if invalid, 0 if only spaces.
 int	check_line_invalid(char *line)
 {
 	int	i;

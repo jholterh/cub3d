@@ -6,12 +6,14 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 16:21:51 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/21 08:46:49 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/21 15:03:55 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+// Safely reallocates memory for the file data array, increasing its size by 50.
+// Returns 1 on failure (and frees already allocated memory), 0 on success.
 static int	safe_file_realloc(char ***data, int *i)
 {
 	char	**tmp;
@@ -31,6 +33,7 @@ static int	safe_file_realloc(char ***data, int *i)
 	return (0);
 }
 
+// Removes the newline character from a string, if present.
 static void	remove_newline(char *str)
 {
 	int	j;
@@ -44,6 +47,9 @@ static void	remove_newline(char *str)
 	}
 }
 
+// Reads lines from a file descriptor into a dynamically allocated array.
+// Each line is stripped of its newline character.
+// Returns 0 on success, 1 on failure.
 static int	safe_file(const int fd, char ***data)
 {
 	int		i;
@@ -71,6 +77,9 @@ static int	safe_file(const int fd, char ***data)
 	return (0);
 }
 
+// Checks if the given file has a valid .cub extension, can be opened, and is not empty.
+// Reads the file into a dynamically allocated array of strings.
+// Returns 0 on success, 1 on failure.
 int	check_file_format(char *file, char ***data)
 {
 	int	str_len;
