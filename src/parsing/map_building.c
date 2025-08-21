@@ -1,13 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_building.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/21 09:09:14 by jholterh          #+#    #+#             */
+/*   Updated: 2025/08/21 09:09:53 by jholterh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-// Sets the player's position and direction based on the character.
-// Returns 0 on success, or 1 if multiple player positions are found.
-static int	set_player_position(t_init_data *init_data, int i, int j, char c)
+static int	set_player_position(t_init_data *init_data, int *pos, char c)
 {
 	if (init_data->player_pos_x != -1)
 		return (print_error("Multiple player start positions found", 1));
-	init_data->player_pos_x = j;
-	init_data->player_pos_y = i;
+	init_data->player_pos_x = pos[1];
+	init_data->player_pos_y = pos[0];
 	if (c == 'N')
 		init_data->camera_direction = 1.5707963267948966;
 	else if (c == 'S')
@@ -19,22 +29,22 @@ static int	set_player_position(t_init_data *init_data, int i, int j, char c)
 	return (0);
 }
 
-
-// Processes a single character in the map, updating the int grid and player data.
-// Returns 0 on success, or 1 on failure.
-static int	process_char(char **char_grid, int **int_grid, t_init_data *init_data, int i, int j)
+static int	process_char(char **char_grid, int **int_grid,
+	t_init_data *init_data, int *pos)
 {
-	if (char_grid[i][j] == '1')
-		int_grid[i][j] = 1; // Wall
-	else if (char_grid[i][j] == '0')
-		int_grid[i][j] = 0; // Empty space
-    else if (char_grid[i][j] == ' ')
-        int_grid[i][j] = -1;
-	else if (char_grid[i][j] == 'N' || char_grid[i][j] == 'S' ||
-			 char_grid[i][j] == 'E' || char_grid[i][j] == 'W')
+	char	c;
+
+	c = char_grid[pos[0]][pos[1]];
+	if (c == '1')
+		int_grid[pos[0]][pos[1]] = 1;
+	else if (c == '0')
+		int_grid[pos[0]][pos[1]] = 0;
+	else if (c == ' ')
+		int_grid[pos[0]][pos[1]] = -1;
+	else if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 	{
-		int_grid[i][j] = 2; // Player start position
-		if (set_player_position(init_data, i, j, char_grid[i][j]))
+		int_grid[pos[0]][pos[1]] = 2;
+		if (set_player_position(init_data, pos, c))
 			return (1);
 	}
 	else
@@ -42,57 +52,55 @@ static int	process_char(char **char_grid, int **int_grid, t_init_data *init_data
 	return (0);
 }
 
-// Converts a 2D char map grid to a 2D int grid, setting wall, empty, and player positions.
-// Also sets player position and direction in init_data.
-// Returns 0 on success, or prints an error and returns 1 on failure.
-int create_map(char **char_grid, int **int_grid, t_init_data *init_data)
+int	create_map(char **char_grid, int **int_grid, t_init_data *init_data)
 {
-    int i, j;
+	int	i;
+	int	j;
+	int	pos[2];
 
-    if (!char_grid || !int_grid)
-        return (print_error("Invalid grid pointers", 1));
-
-    for (i = 0; i < init_data->map_height; i++)
-    {
-        for (j = 0; j < init_data->map_width; j++)
-        {
-            if (process_char(char_grid, int_grid, init_data, i, j))
-                return (1);
-        }
-    }
-
-    if (init_data->player_pos_x == -1)
-        return (print_error("No player start position found", 1));
-
-    return (0);
+	if (!char_grid || !int_grid)
+		return (print_error("Invalid grid pointers", 1));
+	i = 0;
+	while (i < init_data->map_height)
+	{
+		j = 0;
+		while (j < init_data->map_width)
+		{
+			pos[0] = i;
+			pos[1] = j;
+			if (process_char(char_grid, int_grid, init_data, pos))
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	if (init_data->player_pos_x == -1)
+		return (print_error("No player start position found", 1));
+	return (0);
 }
 
-
-
-
-// Allocates a 2D integer grid of the given height and width.
-// Returns pointer to the grid, or NULL on failure.
-int **allocate_int_grid(int height, int width)
+int	**allocate_int_grid(int height, int width)
 {
-    int **grid = malloc(height * sizeof(int *));
-    int i = 0;
+	int	**grid;
+	int	i;
+	int	j;
 
-    if (!grid)
-        return NULL;
-
-    while (i < height)
-    {
-        grid[i] = ft_calloc(width, sizeof(int));
-        if (!grid[i])
-        {
-            // Free already-allocated rows on failure
-            int j = i;
-            while (--j >= 0)
-                free(grid[j]);
-            free(grid);
-            return NULL;
-        }
-        i++;
-    }
-    return grid;
+	grid = malloc(height * sizeof(int *));
+	if (!grid)
+		return (NULL);
+	i = 0;
+	while (i < height)
+	{
+		grid[i] = ft_calloc(width, sizeof(int));
+		if (!grid[i])
+		{
+			j = i;
+			while (--j >= 0)
+				free(grid[j]);
+			free(grid);
+			return (NULL);
+		}
+		i++;
+	}
+	return (grid);
 }
