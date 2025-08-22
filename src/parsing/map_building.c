@@ -6,12 +6,16 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 09:09:14 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/21 09:09:53 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/22 10:19:04 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+/*
+ * Sets the player's position and camera direction based on the map character.
+ * Returns 1 and prints an error if multiple player positions are found.
+ */
 static int	set_player_position(t_init_data *init_data, int *pos, char c)
 {
 	if (init_data->player_pos_x != -1)
@@ -29,6 +33,10 @@ static int	set_player_position(t_init_data *init_data, int *pos, char c)
 	return (0);
 }
 
+/*
+ * Processes a single character from the map, updating the int grid and player position.
+ * Returns 1 on error, 0 otherwise.
+ */
 static int	process_char(char **char_grid, int **int_grid,
 	t_init_data *init_data, int *pos)
 {
@@ -52,6 +60,10 @@ static int	process_char(char **char_grid, int **int_grid,
 	return (0);
 }
 
+/*
+ * Converts the character map to an integer grid and sets the player position.
+ * Returns 1 on error, 0 on success.
+ */
 int	create_map(char **char_grid, int **int_grid, t_init_data *init_data)
 {
 	int	i;
@@ -79,6 +91,10 @@ int	create_map(char **char_grid, int **int_grid, t_init_data *init_data)
 	return (0);
 }
 
+/*
+ * Allocates a 2D integer grid of the given height and width.
+ * Returns a pointer to the grid, or NULL on allocation failure.
+ */
 int	**allocate_int_grid(int height, int width)
 {
 	int	**grid;
