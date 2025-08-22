@@ -22,7 +22,10 @@ SRC = src/parsing/1_file_format.c src/parsing/utils.c src/cub3d.c src/parsing/0_
     src/parsing/map_building.c \
     src/parsing/flood_fill_utils.c \
     src/parsing/validation_utils.c \
-	src/parsing/free_functions.c
+	src/parsing/free_functions.c \
+	src/parsing/flood_fill.c \
+	src/parsing/texture_logic.c \
+	src/parsing/texture_check.c
 
 # Object files (replace src/ with obj/)
 OBJ = $(SRC:src/%.c=obj/%.o)
