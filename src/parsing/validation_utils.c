@@ -6,12 +6,13 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 11:01:07 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/21 14:52:55 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/22 11:06:25 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+// Checks if the texture files exist and are readable
 static int	check_texture_paths(char **textures_paths)
 {
 	int	i;
@@ -27,6 +28,7 @@ static int	check_texture_paths(char **textures_paths)
 	return (0);
 }
 
+// Pads a single map row with spaces if it's shorter than map_width
 static void	pad_row_if_needed(char **row, int map_width)
 {
 	int		len;
@@ -49,6 +51,7 @@ static void	pad_row_if_needed(char **row, int map_width)
 	}
 }
 
+// Pads all map rows to ensure they have the same width
 void	pad_map_rows(char **char_grid, int map_height, int map_width)
 {
 	int	i;
@@ -61,6 +64,7 @@ void	pad_map_rows(char **char_grid, int map_height, int map_width)
 	}
 }
 
+// Validates and extracts ground and sky colors from parsing_help
 static int	validate_colors(t_parsing_help *parsing_help)
 {
 	if (extract_colors(parsing_help->ground_color_str,
@@ -71,6 +75,7 @@ static int	validate_colors(t_parsing_help *parsing_help)
 	return (0);
 }
 
+// Allocates and initializes the map grid, pads map rows as needed
 static int	validate_and_init_grid(t_init_data *init_data,
 		t_parsing_help *parsing_help)
 {
@@ -83,10 +88,7 @@ static int	validate_and_init_grid(t_init_data *init_data,
 	return (0);
 }
 
-// This function validates the textures and colors
-// It checks if the textures exist and are readable,
-// extracts the colors from the parsing help structure,
-// and initializes the grid in the init_data structure
+// Validates textures, colors, initializes grid, and checks map validity
 int	validate_textures_parse(t_init_data *init_data,
 		t_parsing_help *parsing_help)
 {
