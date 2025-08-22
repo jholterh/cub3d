@@ -6,14 +6,16 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 08:54:03 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/21 15:04:58 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/22 11:45:22 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// Extracts and validates a substring from 'str' after skipping 'type_len' characters.
-// Ensures only spaces follow the extracted word, otherwise prints an error and returns NULL.
+// Extracts and validates a substring from 'str'
+// after skipping 'type_len' characters.
+// Ensures only spaces follow the extracted word,
+// otherwise prints an error and returns NULL.
 static char	*extract_and_validate(char *str, int type_len)
 {
 	int		start;
@@ -57,7 +59,8 @@ char	*extract_data(char *str, char *type)
 	return (NULL);
 }
 
-// Checks if the line 'str' contains the specified 'type' at the start (ignoring leading spaces).
+// Checks if the line 'str' contains the specified 'type' at the start
+// (ignoring leading spaces).
 // Returns 1 if found, 0 otherwise.
 int	check_for_type(char *str, char *type)
 {

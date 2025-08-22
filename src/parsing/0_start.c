@@ -6,7 +6,7 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 16:32:12 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/22 11:37:47 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/22 11:44:18 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ void	init_struct(t_init_data *init_data)
 	init_data->grid = NULL;
 }
 
-// Initializes parsing by checking arguments, allocating structures, and validating the file.
+// Initializes parsing by checking arguments,
+// allocating structures, and validating the file.
 // Returns 0 on success, or an error code if any step fails.
 static int	parsing_init(int argc, char **argv, t_init_data **init_data,
 	t_parsing_help **parsing_help)
@@ -84,7 +85,8 @@ static int	parsing_init(int argc, char **argv, t_init_data **init_data,
 	return (0);
 }
 
-// Main entry point for parsing. Initializes structures, validates textures, and cleans up.
+// Main entry point for parsing. Initializes structures,
+// validates textures, and cleans up.
 // Returns 1 on error, or 0 on success.
 int	parsing(int argc, char **argv, t_init_data **init_data)
 {

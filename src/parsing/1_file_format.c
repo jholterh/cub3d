@@ -6,7 +6,7 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 16:21:51 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/21 15:03:55 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/22 11:44:41 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ static int	safe_file(const int fd, char ***data)
 	return (0);
 }
 
-// Checks if the given file has a valid .cub extension, can be opened, and is not empty.
+// Checks if the given file has a valid .cub extension,
+// can be opened, and is not empty.
 // Reads the file into a dynamically allocated array of strings.
 // Returns 0 on success, 1 on failure.
 int	check_file_format(char *file, char ***data)

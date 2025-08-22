@@ -6,14 +6,14 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 11:01:07 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/22 11:06:25 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/22 12:06:43 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // Checks if the texture files exist and are readable
-static int	check_texture_paths(char **textures_paths)
+int	check_texture_paths(char **textures_paths)
 {
 	int	i;
 
@@ -26,29 +26,6 @@ static int	check_texture_paths(char **textures_paths)
 			return (print_error("Texture file is not readable.", 1));
 	}
 	return (0);
-}
-
-// Pads a single map row with spaces if it's shorter than map_width
-static void	pad_row_if_needed(char **row, int map_width)
-{
-	int		len;
-	int		j;
-	char	*new_row;
-
-	len = ft_strlen(*row);
-	if (len < map_width)
-	{
-		new_row = malloc(map_width + 1);
-		if (!new_row)
-			return ;
-		ft_strlcpy(new_row, *row, len + 1);
-		j = len;
-		while (j < map_width)
-			new_row[j++] = ' ';
-		new_row[map_width] = '\0';
-		free(*row);
-		*row = new_row;
-	}
 }
 
 // Pads all map rows to ensure they have the same width

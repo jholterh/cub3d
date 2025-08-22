@@ -6,7 +6,7 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 09:09:14 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/22 10:19:04 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/22 11:58:37 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static int	set_player_position(t_init_data *init_data, int *pos, char c)
 }
 
 /*
- * Processes a single character from the map, updating the int grid and player position.
+ * Processes a single character from the map,
+   updating the int grid and player position.
  * Returns 1 on error, 0 otherwise.
  */
 static int	process_char(char **char_grid, int **int_grid,
