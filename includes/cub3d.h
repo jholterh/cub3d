@@ -6,7 +6,7 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:16:26 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/21 14:51:48 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/22 11:38:04 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_mapinfo
 int     print_error(const char *error_msg, const int return_code);
 
 // start
-int     parsing(int argc, char **argv);
+int     parsing(int argc, char **argv, t_init_data **init_data);
 
 // file format
 int     check_file_format(char *file, char ***data);
@@ -96,5 +96,7 @@ void free_textures_and_colors(t_init_data *init_data, t_parsing_help *parsing_he
 void free_map_grid(char **grid, int map_height);
 void free_int_grid(int **grid, int height);
 int parsing_cleanup(t_init_data *init_data, t_parsing_help *parsing_help, int exit_code);
+int parsing_partial_cleanup(t_parsing_help *parsing_help, t_init_data *init_data);
+void free_init_data(t_init_data *init_data);
 
 #endif

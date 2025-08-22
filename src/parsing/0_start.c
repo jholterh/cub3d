@@ -6,7 +6,7 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/12 16:32:12 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/21 15:03:15 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/22 11:37:47 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,17 +86,16 @@ static int	parsing_init(int argc, char **argv, t_init_data **init_data,
 
 // Main entry point for parsing. Initializes structures, validates textures, and cleans up.
 // Returns 1 on error, or 0 on success.
-int	parsing(int argc, char **argv)
+int	parsing(int argc, char **argv, t_init_data **init_data)
 {
-	t_init_data		*init_data;
 	t_parsing_help	*parsing_help;
 
-	if (parsing_init(argc, argv, &init_data, &parsing_help))
+	if (parsing_init(argc, argv, init_data, &parsing_help))
 		return (1);
-	if (validate_textures_parse(init_data, parsing_help))
+	if (validate_textures_parse(*init_data, parsing_help))
 	{
 		printf(COLOR_RED "This is where it exits.\n" COLOR_RESET);
-		return (parsing_cleanup(init_data, parsing_help, 1));
+		return (parsing_cleanup(*init_data, parsing_help, 1));
 	}
-	return (parsing_cleanup(init_data, parsing_help, 0));
+	return (parsing_partial_cleanup(parsing_help, *init_data));
 }

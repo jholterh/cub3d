@@ -6,7 +6,7 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 14:50:31 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/21 15:09:14 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/22 11:40:00 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,42 @@ int	parsing_cleanup(t_init_data *init_data,
     free(parsing_help);
     free(init_data);
     return (exit_code);
+}
+
+// Only frees parsing helpers and their data
+int parsing_partial_cleanup(t_parsing_help *parsing_help, t_init_data *init_data)
+{
+    int	map_height;
+
+    map_height = 0;
+    if (init_data)
+        map_height = init_data->map_height;
+    if (!parsing_help)
+        return (0);
+    ft_strfree(parsing_help->data);
+    if (parsing_help->ground_color_str)
+        free(parsing_help->ground_color_str);
+    if (parsing_help->sky_color_str)
+        free(parsing_help->sky_color_str);
+    if (parsing_help->grid)
+        free_map_grid(parsing_help->grid, map_height);
+    free(parsing_help);
+    return (0);
+}
+
+
+void free_init_data(t_init_data *init_data)
+{
+    int i;
+
+    if (!init_data)
+        return ;
+    for (i = 0; i < 4; i++)
+    {
+        if (init_data->textures_paths[i])
+            free(init_data->textures_paths[i]);
+    }
+    if (init_data->grid)
+        free_int_grid(init_data->grid, init_data->map_height);
+    free(init_data);
 }
