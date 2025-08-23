@@ -6,7 +6,7 @@
 /*   By: jholterh <jholterh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/21 14:50:31 by jholterh          #+#    #+#             */
-/*   Updated: 2025/08/22 11:56:20 by jholterh         ###   ########.fr       */
+/*   Updated: 2025/08/23 18:41:57 by jholterh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,11 @@ int	parsing_cleanup(t_init_data *init_data,
 		map_height = init_data->map_height;
 	if (parsing_help->grid)
 		free_map_grid(parsing_help->grid, map_height);
-	free_textures_and_colors(init_data, parsing_help);
-	ft_strfree(parsing_help->data);
+	if (init_data && parsing_help)
+	{
+		free_textures_and_colors(init_data, parsing_help);
+		ft_strfree(parsing_help->data);
+	}
 	if (init_data)
 		free_int_grid(init_data->grid, map_height);
 	free(parsing_help);
